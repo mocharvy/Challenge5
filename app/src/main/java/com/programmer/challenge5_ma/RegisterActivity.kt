@@ -21,10 +21,10 @@ class RegisterActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         binding.registerButton1.setOnClickListener {
-            val username = binding.tvUsername1.text.toString().trim()
-            val email = binding.tvEmail1.text.toString().trim()
-            val phone = binding.tvMobile1.text.toString().trim()
-            val password = binding.tvPassword1.text.toString()
+            val username = binding.etUsernameValue1.text.toString().trim()
+            val email = binding.etEmailValue1.text.toString().trim()
+            val phone = binding.etMobileValue1.text.toString().trim()
+            val password = binding.etPasswordValue1.text.toString()
 
             // Validasi input
             if (username.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()) {
