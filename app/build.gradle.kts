@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.programmer.challenge5_ma"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.programmer.challenge5_ma"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 

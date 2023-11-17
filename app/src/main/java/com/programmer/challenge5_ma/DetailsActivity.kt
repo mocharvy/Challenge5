@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.programmer.challenge5_ma.databinding.ActivityDetailsBinding
 import com.programmer.challenge5_ma.item.CartItem
 import com.programmer.challenge5_ma.viewmodel.CartViewModel
@@ -36,7 +37,7 @@ class DetailsActivity : AppCompatActivity() {
         val name = bundle?.getString("name")
         val price = bundle?.getInt("price")
         val description = bundle?.getString("description")
-        val imageRes = bundle?.getInt("imageRes")
+        val imageRes = bundle?.getString("imageRes")
         val restaurantAddress = bundle?.getString("restaurantAddress")
         googleMapsUrl = bundle!!.getString("googleMapsUrl", "")
 
@@ -69,6 +70,7 @@ class DetailsActivity : AppCompatActivity() {
 
         //Tambahkan onClickListener untuk tombol "Tambah Ke Keranjang"
         binding.btnAddToCart.setOnClickListener {
+
             // Ambil data makanan untuk disimpan ke dalam keranjang
             val cartItem = CartItem(
                 foodName = name.toString(),
@@ -79,11 +81,16 @@ class DetailsActivity : AppCompatActivity() {
             )
             if (quantity > 0){
                 // Untuk menyimpan item ke dalam keranjang menggunakan CartItemDao
-                viewModel.insertCartItem(cartItem)
+                try {
+                    viewModel.insertCartItem(cartItem)
+                    // Tampilkan pesan berhasil menambahkan ke keranjang
+                    Toast.makeText(this@DetailsActivity, "Item ditambahkan ke keranjang", Toast.LENGTH_SHORT).show()
+                    finish()
+                }catch (e: Exception){
+                    e.printStackTrace()
+                }
 
-                // Tampilkan pesan berhasil menambahkan ke keranjang
-                Toast.makeText(this@DetailsActivity, "Item ditambahkan ke keranjang", Toast.LENGTH_SHORT).show()
-                finish()
+
             } else {
                 Toast.makeText(this@DetailsActivity, "Jumlah item tidak boleh 0!", Toast.LENGTH_SHORT).show()
 
@@ -110,9 +117,11 @@ class DetailsActivity : AppCompatActivity() {
     }
 
 
-    private fun updateUI(name: String?, price: String?, description: String?, imageRes: Int, restaurantAddress: String?) {
+    private fun updateUI(name: String?, price: String?, description: String?, imageRes: String, restaurantAddress: String?) {
         binding.apply {
-            imgFood.setImageResource(imageRes)
+            Glide.with(this@DetailsActivity)
+                .load(imageRes)
+                .into(imgFood)
             txtFoodName.text = name
             txtFoodPrice.text = "Rp. $price"
             txtFoodDescription.text = description
